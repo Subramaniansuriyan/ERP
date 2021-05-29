@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Upload Invoice File" [options]="false">
+
+      <!--h5 class="mt-3">Upload Invoice File</h5-->
+        <!--hr-->
+      
+      <div class="row">
+        
+        <div class="col-md-6">         
+          
+          <div class="input-group cust-file-button">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile04" (change)="onFileChange($event)" multiple="false">
+              <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">Upload</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-card>
+
+    <app-card cardTitle="Purchase Invoice Data">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Search">
+          <ng-template #noResults>
+            <p>No results found for "{{searchText}}".</p>
+          </ng-template>
+        </div>  
+        <div class="col-md-6" *ngIf="searchInvoices.length > 0;">
+        <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshInvoices()">
+          <option [ngValue]="5">5 items per page</option>
+          <option [ngValue]="10">10 items per page</option>
+          <option [ngValue]="15">15 items per page</option>
+          <option [ngValue]="20">20 items per page</option>
+          <option [ngValue]="25">25 items per page</option>
+        </select>
+      </div>
+    </div>
+      <div class="table-responsive">
+        <table class="table table-xl table-striped" *ngIf="(searchInvoices | filter: searchText).length > 0; else noResults">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order Number</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Check</th>
+            <th scope="col">Order Status</th>
+            <th scope="col" >Updated Date</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr class="tbody" *ngFor="let invoice of searchInvoices | filter: searchText; let i = index">
+              <td><input type="checkbox" name="websitecheck" [checked]="isChecked" [(ngModel)]="searchInvoices[i].checked"
+                (change)="onCheckboxchange($event.srcElement,invoice['Order Number'])" value="{{i+1}}"></td>
+              <!-- <th scope="row">{{i + 1}}</th>              -->
+              <td>{{invoice['Order Number']}}</td>
+              <td>{{invoice['Order date']}}</td>
+              <td>{{invoice?.Check}}</td>
+              <td>{{invoice['Order status']}}</td>
+              <td>{{invoice['Updated at']}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-between p-2" *ngIf="searchInvoices.length > 0;">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="pageSize" [boundaryLinks]="true" (pageChange)="refreshInvoices()"></ngb-pagination>                     
+      
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-xl table-striped" *ngIf="(itemdetailsData | filter: searchText).length > 0; else noResults">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">MarketPlace</th>
+            <th scope="col">ItemSKU</th> 
+            <th scope="col">ItemName</th> 
+            <th scope="col">RetailPrice</th> 
+            <th scope="col">OrderedQty</th> 
+            <th scope="col">Paidamount</th> 
+            <th scope="col">PaymentMethod</th> 
+            <th scope="col">SNNumber</th> 
+          </tr>
+          </thead>
+          <tbody>
+            <tr class="tbody" *ngFor="let datao of itemdetailsData | filter: searchText; let i = index">
+              <th scope="row">{{i + 1}}</th>             
+              <td>{{datao?.Marketplace}}</td>
+              <td>{{datao['Seller SKU']}}</td>      
+              <td>{{datao['Item Name']}}</td>      
+              <td>{{datao['Retail Price']}}</td>      
+              <td>{{datao['Ordered Qty']}}</td>      
+              <td>{{datao['Paid amount']}}</td>      
+              <td>{{datao['Payment Method']}}</td>      
+              <td>{{datao['SN No']}}</td>      
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-xl table-striped" *ngIf="(shippingdetailsData | filter: searchText).length > 0; else noResults">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ShippingAddress</th>
+            <th scope="col">ShippingAddress2</th> 
+            <th scope="col">ShippingCity</th> 
+            <th scope="col">ShippingPostcode</th> 
+            <th scope="col">ShippingCountry</th> 
+            <th scope="col">ShippingProvider</th> 
+            <th scope="col">ShipmentTypeName</th> 
+            <th scope="col">TrackingCode</th> 
+            <th scope="col">OrderPickingTime</th> 
+            <th scope="col">OrderPackingTime</th> 
+            <th scope="col">ShippingFee</th> 
+          </tr>
+          </thead>
+          <tbody>
+            <tr class="tbody" *ngFor="let datao of shippingdetailsData | filter: searchText; let i = index">
+              <th scope="row">{{i + 1}}</th>             
+              <td>{{datao['Shipping Address']}}</td>
+              <td>{{datao['Shipping Address2']}}</td>      
+              <td>{{datao['Shipping City']}}</td>      
+              <td>{{datao['Shipping Postcode']}}</td>      
+              <td>{{datao['Shipping Country']}}</td>      
+              <td>{{datao['Shipping Provider']}}</td>      
+              <td>{{datao['Shipment Type Name']}}</td>      
+              <td>{{datao['Tracking Code']}}</td>      
+              <td>{{datao['Order Picking Time']}}</td>   
+              <td>{{datao['Order Packing Time']}}</td>  
+              <td>{{datao['Shipping Fee']}}</td>  
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </app-card>
+
+   
+  </div>
+</div>

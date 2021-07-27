@@ -7,11 +7,16 @@ import {ShippingDetails} from '../../../models/shipping.module';
 import { OrderDetails} from '../../../models/order.model';
 import * as XLSX from 'xlsx';
 import { element } from 'protractor';
+import { ThemeHorizontalComponent } from '../../layout/theme-horizontal/theme-horizontal.component';
+import { runInThisContext } from 'vm';
+import { DatePipe } from '@angular/common'
+import { copyFileSync } from 'fs';
 
 @Component({
   selector: 'bulk-upload',
   templateUrl: './bulk-upload.component.html',
-  styleUrls: ['./bulk-upload.component.scss']
+  styleUrls: ['./bulk-upload.component.scss'],
+  providers: [DatePipe]
 })
 export class BulkUploadComponent implements OnInit {
   exceltoJson = {};
@@ -23,12 +28,16 @@ export class BulkUploadComponent implements OnInit {
   shippingdetailsData = [];
   searchText: string;
   disp: string[];
-
+  stat =  [];
+  date:Date;
   page = 1;
   pageSize = 25;
   collectionSize: number; 
   isChecked = false;
-  constructor(private excelSrv: ExcelService) { 
+  checked = false;
+  statusValidation = null;
+  statusValidation_date = null;
+  constructor(private excelSrv: ExcelService,public datepipe: DatePipe) { 
    
   }
 
@@ -45,24 +54,14 @@ export class BulkUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-   
-   /* for (let index = 0; index < 10; index++) {
-      const invoice = new Invoice();
-      invoice.invoiceno = faker.invoiceno;
-      invoice.grdate = faker.phone.phoneNumber();
-      invoice.invoicedate = faker.internet.email();
-      invoice.wareocode = faker.address.streetAddress();
-      invoice.cbm = faker.address.streetAddress();
-      invoice.purchaseqty = faker.address.streetAddress();
-      invoice.unitprice = faker.address.streetAddress();
-      invoice.exchvalue = faker.address.streetAddress();
-      invoice.customs = faker.address.streetAddress();
-      invoice.customduty = faker.address.streetAddress();
-      this.exportInvoices.push(invoice);
-    }*/
+  }
+
+  ngAfterViewInit() {
+    this.pageSize = 5
   }
 
   isAllCheckBoxChecked() {
+    console.log("here")
 		return this.searchInvoices.every(p => p.Checked);
 	}
 
@@ -76,21 +75,11 @@ export class BulkUploadComponent implements OnInit {
       const bstr: string = e.target.result;
       const data = <any[]>this.excelSrv.importFromFile(bstr);
 
-      const header: string[] = Object.getOwnPropertyNames(new OrderDetails());
+      const header = new OrderDetails()
+      console.log(header)
       const importedData = data
       this.importInvoices = importedData
-      
-      // this.importInvoices = importedData.map(arr => {
-      //   const obj = {};
-      //   for (let i = 0; i < header.length; i++) {
-      //     const k = header[i];
-      //     obj[k] = arr[i];
-      //     // console.log(obj)
-      //   }
-      //   return <OrderDetails>obj;
-      // })
-      
-      this.searchInvoices = data   
+      this.searchInvoices = data.slice(0,5)
       this.collectionSize = this.importInvoices.length;
      
     };
@@ -125,23 +114,49 @@ export class BulkUploadComponent implements OnInit {
   }
 
   refreshInvoices() {
-    console.log(this.pageSize);
     this.searchInvoices = this.importInvoices
       .map((invoice, i) => ({id: i + 1, ...invoice}))
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
-  onCheckboxchange(input: HTMLInputElement,od_number){
-    if (input.checked === true){
+  groupsave(){
+    this.date = new Date()
+    let latest_date =this.datepipe.transform(this.date, 'dd-MM-yyyy');
+    let other_data = this.importInvoices.filter(item => item['Order status'] !== "Completed" && item['Order status'] !=="Returned")
+    if (other_data.length > 0){
+      this.statusValidation ="Please check the order status upload the correct excel";
+    }else{
+      this.statusValidation = null;
+      console.log(this.importInvoices)
+    }
+    let o_date = this.importInvoices.filter(item => item['Order date'] > latest_date)
+    if (o_date.length > 0){
+      this.statusValidation_date ="Please check the order date upload the correct excel";
+    }else{
+      this.statusValidation_date = null;
+      console.log(this.importInvoices)
+    }
+    
+  }
+
+  onCheckboxchange(event,od_number){
+    let selected = [];
+    if (event.target.checked === true){
+      Object.entries(this.searchInvoices).forEach(([key, value]) => {
+        if(value['Order Number']!== od_number){
+          this.searchInvoices[key].checked = false;
+        }
+      });
       let data = this.importInvoices.filter(item => item['Order Number'] === od_number);
       for (var i = 0; i < data.length; i++) {
-        this.itemdetailsData.push(data[i])
-        this.shippingdetailsData.push(data[i])
+        selected.push(data[i])
+        this.itemdetailsData = selected
+        this.shippingdetailsData = selected
       }
     }
-    if (input.checked === false){
+    if (event.target.checked === false){
       this.itemdetailsData = this.itemdetailsData.filter(item => item['Order Number'] !== od_number)
       this.shippingdetailsData = this.shippingdetailsData.filter(item => item['Order Number'] !== od_number)
+    }
   }
-}
 }

@@ -1835,26 +1835,26 @@ export class ChartDB {
     stroke: {
       width: [5, 7, 5],
       curve: 'straight',
-      dashArray: [0, 8, 5]
+      dashArray: [0, 0, 5]
     },
     colors: ['#0e9e4a', '#ffa21d', '#ff5252'],
     series: [{
-      name: 'Session Duration',
+      name: 'Sales',
       data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-    },
+      },
       {
-        name: 'Page Views',
+        name: 'Cost of Goods',
         data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
       },
       {
-        name: 'Total Visits',
+        name: 'GP',
         data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
       }
     ],
-    title: {
-      text: 'Page Statistics',
-      align: 'left'
-    },
+    // title: {
+    //   text: 'Page Statistics',
+    //   align: 'left'
+    // },
     markers: {
       size: 0,
 
@@ -2057,14 +2057,18 @@ export class ChartDB {
       colors: ['#fff']
     },
     series: [{
-      data: [44, 55, 41, 64, 22, 43, 21]
-    }, {
-      data: [53, 32, 33, 52, 13, 44, 32]
+      name:"series",
+      data: [44, 55, 41, 64, 10, 43]
     }],
     xaxis: {
-      categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007],
+      categories: ['XY-09', 'UY-878', 'MM-344', 'YE-27662', 'WE-1002', 'WB-1001'],
     },
 
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetX: 20
+    }
   };
   public static bar4CAC = {
     chart: {
@@ -2082,32 +2086,29 @@ export class ChartDB {
       },
 
     },
-    colors: ['#4680ff', '#00acc1', '#0e9e4a', '#ffa21d', '#ff5252'],
+    colors: ['#4680ff', '#00acc1', '#0e9e4a', '#ffa21d'],
     stroke: {
       width: 1,
       colors: ['#fff']
     },
     series: [{
-      name: 'Marine Sprite',
-      data: [44, 55, 41, 37, 22, 43, 21]
+      name: 'Lazada',
+      data: [44, 0, 10, 11, 21]
     }, {
-      name: 'Striking Calf',
-      data: [53, 32, 33, 52, 13, 43, 32]
+      name: 'MM',
+      data: [20, 32, 33, 52, 13]
     }, {
-      name: 'Tank Picture',
-      data: [12, 17, 11, 9, 15, 11, 20]
+      name: 'Shoppy',
+      data: [12, 17, 11, 9, 15]
     }, {
-      name: 'Bucket Slope',
-      data: [9, 7, 5, 8, 6, 9, 4]
-    }, {
-      name: 'Reborn Kid',
-      data: [25, 12, 19, 32, 25, 24, 10]
+      name: 'Luzmail',
+      data: [9, 7, 5, 8, 6]
     }],
-    title: {
-      text: '100% Stacked Bar'
-    },
+    // title: {
+    //   text: '100% Stacked Bar'
+    // },
     xaxis: {
-      categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+      categories: ['Computer Spares', 'Spares', 'Mobile Accessories', 'Electornic Spares', 'Car Accessories'],
     },
 
     tooltip: {
@@ -3005,9 +3006,9 @@ export class ChartDB {
       height: 320,
       type: 'pie',
     },
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-    series: [44, 55, 13, 43, 22],
-    colors: ['#4680ff', '#0e9e4a', '#00acc1', '#ffa21d', '#ff5252'],
+    labels: ['Shoppy', 'Lazada', 'Luzmail', 'Others'],
+    series: [30, 55, 13, 43],
+    colors: ['#4680ff', '#0e9e4a', '#00acc1', '#ffa21d'],
     legend: {
       show: true,
       position: 'bottom',
@@ -3221,28 +3222,31 @@ export class ChartDB {
     },
     series: [{
       name: 'Series 1',
-      data: [80, 50, 30, 40, 100, 20],
-    }, {
-      name: 'Series 2',
-      data: [20, 30, 40, 80, 20, 80],
-    }, {
-      name: 'Series 3',
-      data: [44, 76, 78, 13, 43, 10],
-    }],
-    title: {
-      text: 'Radar Chart - Multi Series'
-    },
+      data: [80, 50, 30, 40, 100, 20, 10, 60, 70, 90],
+    }, 
+    // {
+    //   name: 'Series 2',
+    //   data: [20, 30, 40, 80, 20, 80, 20, 10, 60, 70],
+    // }, {
+    //   name: 'Series 3',
+    //   data: [44, 76, 78, 13, 43, 10, 15, 25, 65, 72],
+    // }
+    ],
+    // title: {
+    //   text: 'Radar Chart - Multi Series'
+    // },
     colors: ['#4680ff', '#0e9e4a', '#ff5252'],
     stroke: {
-      width: 0
+      width: 2
     },
     fill: {
-      opacity: 0.7
+      opacity: 0
     },
     markers: {
       size: 0
     },
-    labels: ['2011', '2012', '2013', '2014', '2015', '2016']
+    labels: ['WB-1001', 'wE-1002', 'YE-27662', 'MM-344', 'UY-878', 'XY-09','XC-22','MM-585','MC-85','MX0-85','MCC-25',
+            'XY-09','XY-091','CV0','CV2']
   };
   public static support1HACC = {
     chart: {

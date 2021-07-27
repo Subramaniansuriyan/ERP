@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: 'salesreport',
         loadChildren: () => import('./sales-report/sales-report.module').then(module => module.SalesReportModule)
+      },
+      {
+        path: 'datewise',
+        loadChildren: () => import('./date-wise_report/date-wise-report.module').then(module => module.DateWiseModule)
       }
       /*{
         path: 'reset-password',

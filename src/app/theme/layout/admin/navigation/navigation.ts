@@ -40,6 +40,13 @@ const NavigationItems = [
         icon: 'feather icon-home'
       },
       {
+        id: 'dashboard',
+        title: 'NewDashboard',
+        type: 'item',
+        url: '/newdashboard/analytics',
+        icon: 'feather icon-home'
+      },
+      {
         id: 'page-layouts',
         title: 'Horizontal Layouts',
         type: 'item',
@@ -104,6 +111,12 @@ const NavigationItems = [
             title: 'Sales Report',
             type: 'item',
             url: '/sales/salesreport'
+          },
+          {
+            id: 'datewise',
+            title: 'Date-wise Report',
+            type: 'item',
+            url: '/sales/datewise'
           }
         ]
       },

@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Date-wise Report" [options]="false">
+
+      <!--h5 class="mt-3">Upload Invoice File</h5-->
+        <!--hr-->
+      
+      <div class="row">
+        
+        <div class="col-md-6">
+          <div>
+            <div>
+              From:
+              <input type="datetime-local" 
+                [ngModel]="filterDateFrom | date:'yyyy-MM-ddTHH:mm'"
+                (ngModelChange)="filterDateFrom = $event" />
+              To:
+              <input type="datetime-local" 
+              [ngModel]="filterDateFrom | date:'yyyy-MM-ddTHH:mm'"
+              (ngModelChange)="filterDateTO = $event" /> 
+              <button class="btn btn-primary" type="button" (click)="groupsave($event)">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </app-card>
+
+    <app-card cardTitle="Data">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Search">
+          <ng-template #noResults>
+            <p>No results found for "{{searchText}}".</p>
+          </ng-template>
+        </div>  
+        <!-- <div class="col-md-6" *ngIf="searchInvoices.length > 0;">
+        <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshInvoices()">
+          <option [ngValue]="5">5 items per page</option>
+          <option [ngValue]="10">10 items per page</option>
+          <option [ngValue]="15">15 items per page</option>
+          <option [ngValue]="20">20 items per page</option>
+          <option [ngValue]="25">25 items per page</option>
+        </select>
+      </div> -->
+      </div>
+      <div class="table-responsive">
+        <table class="table table-xl table-striped" *ngIf="(searchInvoices | filter: searchText).length > 0; else noResults">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order Number</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Order Status</th>
+            <th scope="col" >Updated Date</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr class="tbody" *ngFor="let invoice of searchInvoices | filter: searchText; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{invoice['OrderNumber']}}</td>
+              <td>{{invoice['Orderdate']}}</td>
+              <td>{{invoice['Orderstatus']}}</td>
+              <td>{{invoice['Updatedat']}}</td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+      <div class="d-flex justify-content-between p-2" *ngIf="searchInvoices.length > 0;">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="pageSize" [boundaryLinks]="true" (pageChange)="refreshInvoices()"></ngb-pagination>                     
+      
+      </div>
+
+    </app-card>
+
+   
+  </div>
+</div>

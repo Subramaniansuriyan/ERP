@@ -1,0 +1,172 @@
+<div class="row">
+
+  <div class="col-sm-12" >
+    <app-card cardTitle="Over all Sales Report" [options]="false">
+      <fieldset>
+        <div class="some-class">
+          <input type="radio" class="radio" name="x" value="Daily" id="z" [(ngModel)]="sales_custom" [checked]="true" (change)="onItemChange($event.target.value)"/>
+          <label for="z">Daily</label>
+          <input type="radio" class="radio" name="x" value="Weekly" id="z" [(ngModel)]="sales_custom" [checked]="true" (change)="onItemChange($event.target.value)"/>
+          <label for="z">Weekly</label>
+          <input type="radio" class="radio" name="x" value="Monthly" id="z" [(ngModel)]="sales_custom" [checked]="true" (change)="onItemChange($event.target.value)"/>
+          <label for="a">Monthly</label>
+          <input type="radio" class="radio" name="x" value="Yearly" id="z" [(ngModel)]="sales_custom" [checked]="true" (change)="onItemChange($event.target.value)"/>
+          <label for="b">Yearly</label>
+          <input type="radio" class="radio" name="x" value="Custom date" id="z" [(ngModel)]="sales_custom" [checked]="true" (change)="onItemChange($event.target.value)"/>
+          <label for="c">Custom date</label>
+        </div>
+      </fieldset>
+      <div *ngIf="isSelected('Daily')" > 
+        <app-daily-selection></app-daily-selection>
+      </div>  
+      <div *ngIf="isSelected('Weekly')" >
+        <app-weekly-selection></app-weekly-selection>
+      </div> 
+      <div *ngIf="isSelected('Monthly')" >  
+        <app-monthly-selection></app-monthly-selection>
+      </div> 
+      <div *ngIf="isSelected('Yearly')" >  Yearly radio button selected</div> 
+      <div *ngIf="isSelected('Custom date')" >  Custom date radio button selected</div> 
+    </app-card>
+
+    <!-- <div class="calendar__wrapper">
+      <div class="calendar__input-wrapper" (click)="show = !show">
+        <input readonly class="calendar__input" [(ngModel)]="selectedDate">
+      </div>
+      <div class="calendar" *ngIf="show" #calendar>
+        <div class="calendar__navs">
+          <div class="calendar__month-nav">
+            <button class="calendar__nav-btn" (click)="prevMonth()">&lt;</button>
+            <span>
+              {{currentDate.format('MMMM').toUpperCase()}}  
+               {{currentDate.format('YYYY')}}
+               </span>
+            <button class="calendar__nav-btn" 
+                    [disabled]="!isDisabledMonth(currentDate)"
+                    (click)="nextMonth()"
+            >&gt;</button>
+          </div>
+        </div>
+        <div class="calendar__month">
+          <div class="calendar__day-names">
+            <div class="calendar__day-name" 
+                  *ngFor="let name of namesOfDays">{{name}}</div>
+          </div>
+          <div class="calendar__weeks">
+            <div class="calendar__week" *ngFor="let week of weeks">
+              <ng-container *ngFor="let day of week">
+                <div class="calendar__date"
+                     [ngClass]="{'today': day.today, 
+                                  'selected': day.selected, 
+                                  'disabled': !isSelectedMonth(day.mDate)}"
+                     (click)="selectDate(day)">
+                  <span class="calendar__number">{{day.mDate.date()}}</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <!-- Pie chart start -->  
+  <div class="col-md-6">
+    <app-card cardTitle="Over all Sales" [options]="false">
+      <app-apex-chart chartID="pie-chart-1-cac" [chartConfig]="sales_pie()"></app-apex-chart>
+    </app-card>
+  </div>
+  
+  <!-- Pie chart end -->
+
+  <!-- account-section start -->
+  <div class="col-xl-6">
+    <app-card cardTitle="Purchase/Sales" cardClass="table-card" blockClass="p-0" [options]="false">
+      <table class="table table-xl table-striped" >
+        <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Sales</th>
+          <th scope="col">Cost of Goods</th>  
+          <th scope="col">Gross Profit</th>              
+        </tr>
+        </thead>
+        <tbody>
+          <tr class="tbody" >                    
+            <td>05/01/2021</td>
+            <td>250010</td>
+            <td>352005</td>   
+            <td>50000</td>          
+          </tr>
+          <tr class="tbody" >                    
+            <td>05/02/2021</td>
+            <td>250010</td>
+            <td>352005</td> 
+            <td>50000</td>            
+          </tr>
+          <tr class="tbody" >                    
+            <td>05/03/2021</td>
+            <td>250010</td>
+            <td>352005</td>  
+            <td>50000</td>           
+          </tr>
+          <tr class="tbody" >                    
+            <td>05/04/2021</td>
+            <td>250010</td>
+            <td>352005</td>   
+            <td>50000</td>          
+          </tr>
+          <tr class="tbody" >                    
+            <td>05/05/2021</td>
+            <td>250010</td>
+            <td>352005</td> 
+            <td>50000</td>            
+          </tr>
+         
+        </tbody>
+      </table>
+    </app-card>
+
+  </div>
+
+  <!-- Bar chart horizontal stacked start -->
+  <div class="col-md-6">
+    <app-card cardTitle="Sales by Category"  [options]="false">
+      <select class="custom-select" style="width: auto;margin-left: 320px;" [(ngModel)]="new_check" (ngModelChange)="refreshchart()">
+        <option [ngValue]="ComputerSpares">Computer Spares</option>
+        <option [ngValue]="Spares">Spares</option>
+        <option [ngValue]="MobileAccessories">Mobile Accessories</option>
+        <option [ngValue]="ElectornicSpares">Electornic Spares</option>
+        <option [ngValue]="CarAccessories">Car Accessories</option>
+      </select>
+      <app-apex-chart chartID="bar-chart-4-cac" [chartConfig]="sales_bar()"></app-apex-chart>
+    </app-card>
+  </div>
+  <!-- Bar chart horizontal stacked end -->
+
+  <!-- Bar chart horizontal start -->
+  <div class="col-md-6">
+    <app-card cardTitle="Low Stock Indicator" [options]="false">
+      <app-apex-chart chartID="bar-chart-3-cac" [chartConfig]="this.chartDB.bar3CAC"></app-apex-chart>
+    </app-card>
+  </div>
+  <!-- Bar chart horizontal end -->
+
+  <!-- Different line chart start -->
+  <div class="col-sm-6">
+    <app-card cardTitle="GP Trend" [options]="false">
+      <app-apex-chart chartID="line-chart-3-cac" [chartConfig]="this.chartDB.line3CAC"></app-apex-chart>
+    </app-card>
+  </div>
+  <!-- Different line chart end -->
+
+  <!-- Radar Chart Multiple Series start -->
+  <div class="col-md-6">
+    <app-card cardTitle="Inventory Turnover" [options]="false">
+      <app-apex-chart chartID="radar-chart-2-cac" [chartConfig]="this.chartDB.radar2CAC"></app-apex-chart>
+    </app-card>
+  </div>
+  <!-- Radar Chart Multiple Series end -->
+</div>
+
+  
+  
